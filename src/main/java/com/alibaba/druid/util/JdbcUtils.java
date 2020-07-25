@@ -840,13 +840,6 @@ public final class JdbcUtils implements JdbcConstants {
             return MySqlUtils.showTables(conn);
         }
 
-        if (JdbcConstants.ORACLE.equals(dbType) || JdbcConstants.OCEANBASE_ORACLE.equals(dbType)) {
-            return OracleUtils.showTables(conn);
-        }
-
-        if (JdbcConstants.POSTGRESQL.equals(dbType)) {
-            return PGUtils.showTables(conn);
-        }
         throw new SQLException("show tables dbType not support for " + dbType);
     }
 
@@ -857,10 +850,6 @@ public final class JdbcUtils implements JdbcConstants {
     public static String getCreateTableScript(Connection conn, String dbType, boolean sorted, boolean simplify) throws SQLException {
         if (JdbcConstants.MYSQL.equals(dbType) || JdbcConstants.OCEANBASE.equals(dbType)) {
             return MySqlUtils.getCreateTableScript(conn, sorted, simplify);
-        }
-
-        if (JdbcConstants.ORACLE.equals(dbType) || JdbcConstants.OCEANBASE_ORACLE.equals(dbType)) {
-            return OracleUtils.getCreateTableScript(conn, sorted, simplify);
         }
 
         throw new SQLException("getCreateTableScript dbType not support for " + dbType);

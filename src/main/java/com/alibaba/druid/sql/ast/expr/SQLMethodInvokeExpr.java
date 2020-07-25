@@ -17,7 +17,6 @@ package com.alibaba.druid.sql.ast.expr;
 
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.*;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleASTVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.util.FnvHash;
 
@@ -209,34 +208,6 @@ public class SQLMethodInvokeExpr extends SQLExprImpl implements SQLReplaceable, 
         children.add(owner);
         children.addAll(this.arguments);
         return children;
-    }
-
-    protected void accept0(OracleASTVisitor visitor) {
-        if (visitor.visit(this)) {
-            if (this.owner != null) {
-                this.owner.accept(visitor);
-            }
-
-            for (SQLExpr arg : this.arguments) {
-                if (arg != null) {
-                    arg.accept(visitor);
-                }
-            }
-
-            if (this.from != null) {
-                this.from.accept(visitor);
-            }
-
-            if (this.using != null) {
-                this.using.accept(visitor);
-            }
-
-            if (this._for != null) {
-                this._for.accept(visitor);
-            }
-        }
-
-        visitor.endVisit(this);
     }
 
     @Override

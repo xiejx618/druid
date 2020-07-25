@@ -15,14 +15,12 @@
  */
 package com.alibaba.druid.sql.ast;
 
-import com.alibaba.druid.sql.dialect.oracle.ast.OracleSegmentAttributes;
-import com.alibaba.druid.sql.dialect.oracle.ast.OracleSegmentAttributesImpl;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLPartition extends OracleSegmentAttributesImpl implements OracleSegmentAttributes {
+public class SQLPartition extends SQLObjectImpl implements SQLObject {
 
     protected SQLName               name;
 
@@ -162,13 +160,10 @@ public class SQLPartition extends OracleSegmentAttributesImpl implements OracleS
             acceptChild(visitor, values);
             acceptChild(visitor, dataDirectory);
             acceptChild(visitor, indexDirectory);
-            acceptChild(visitor, tablespace);
             acceptChild(visitor, maxRows);
             acceptChild(visitor, minRows);
             acceptChild(visitor, engine);
             acceptChild(visitor, comment);
-
-            acceptChild(visitor, storage);
         }
         visitor.endVisit(this);
     }

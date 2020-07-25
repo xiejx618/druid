@@ -19,7 +19,6 @@ import com.alibaba.druid.sql.ast.SQLName;
 import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.ast.SQLPartitionBy;
 import com.alibaba.druid.sql.ast.SQLStatementImpl;
-import com.alibaba.druid.sql.dialect.oracle.ast.OracleSegmentAttributes;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * Created by wenshao on 30/06/2017.
  */
-public class SQLCreateMaterializedViewStatement extends SQLStatementImpl implements OracleSegmentAttributes, SQLCreateStatement {
+public class SQLCreateMaterializedViewStatement extends SQLStatementImpl implements SQLObject, SQLCreateStatement {
     private SQLName name;
     private List<SQLName> columns = new ArrayList<SQLName>();
 

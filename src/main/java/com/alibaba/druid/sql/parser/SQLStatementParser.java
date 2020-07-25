@@ -21,7 +21,6 @@ import com.alibaba.druid.sql.ast.statement.*;
 import com.alibaba.druid.sql.ast.statement.SQLCreateTriggerStatement.TriggerType;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlExprParser;
-import com.alibaba.druid.sql.dialect.oracle.parser.OracleExprParser;
 import com.alibaba.druid.util.FnvHash;
 import com.alibaba.druid.util.JdbcConstants;
 
@@ -2203,9 +2202,6 @@ public class SQLStatementParser extends SQLParser {
         }
 
         for (; ; ) {
-            if (exprParser instanceof OracleExprParser) {
-                ((OracleExprParser) exprParser).parseSegmentAttributes(stmt);
-            }
 
             if (lexer.identifierEquals("REFRESH")) {
                 lexer.nextToken();

@@ -21,10 +21,6 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlExprParser;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlLexer;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
-import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleSelectQueryBlock;
-import com.alibaba.druid.sql.dialect.oracle.parser.OracleExprParser;
-import com.alibaba.druid.sql.dialect.oracle.parser.OracleLexer;
-import com.alibaba.druid.sql.dialect.oracle.parser.OracleStatementParser;
 import com.alibaba.druid.util.JdbcConstants;
 import com.alibaba.druid.util.JdbcUtils;
 
@@ -52,9 +48,6 @@ public class SQLParserUtils {
     }
 
     public static SQLStatementParser createSQLStatementParser(String sql, String dbType, SQLParserFeature... features) {
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleStatementParser(sql);
-        }
 
         if (JdbcUtils.H2.equals(dbType)) {
             return new H2StatementParser(sql);
@@ -74,9 +67,7 @@ public class SQLParserUtils {
     }
 
     public static SQLExprParser createExprParser(String sql, String dbType) {
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleExprParser(sql);
-        }
+
 
         if (JdbcUtils.isMysqlDbType(dbType)) {
             return new MySqlExprParser(sql);
@@ -88,9 +79,6 @@ public class SQLParserUtils {
     }
 
     public static Lexer createLexer(String sql, String dbType) {
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleLexer(sql);
-        }
 
         if (JdbcUtils.isMysqlDbType(dbType)) {
             return new MySqlLexer(sql);
@@ -101,9 +89,7 @@ public class SQLParserUtils {
     }
 
     public static SQLSelectQueryBlock createSelectQueryBlock(String dbType) {
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleSelectQueryBlock();
-        }
+
 
         if (JdbcUtils.isMysqlDbType(dbType)) {
             return new MySqlSelectQueryBlock();

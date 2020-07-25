@@ -19,7 +19,6 @@ import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.*;
 import com.alibaba.druid.sql.ast.expr.*;
 import com.alibaba.druid.sql.ast.statement.*;
-import com.alibaba.druid.sql.dialect.oracle.ast.expr.OracleArgumentExpr;
 import com.alibaba.druid.util.FnvHash;
 import com.alibaba.druid.util.JdbcConstants;
 
@@ -2210,7 +2209,7 @@ public class SQLExprParser extends SQLParser {
                 lexer.nextToken();
                 rightExp = expr();
                 String argumentName = ((SQLIdentifierExpr) expr).getName();
-                expr = new OracleArgumentExpr(argumentName, rightExp);
+                //expr = new OracleArgumentExpr(argumentName, rightExp);
             }
             break;
             case BANGEQ:

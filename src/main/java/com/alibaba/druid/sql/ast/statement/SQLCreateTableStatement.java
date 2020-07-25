@@ -23,7 +23,6 @@ import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.dialect.mysql.ast.MySqlKey;
 import com.alibaba.druid.sql.dialect.mysql.ast.MySqlUnique;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlTableIndex;
-import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleCreateSynonymStatement;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.util.FnvHash;
 import com.alibaba.druid.util.ListDG;
@@ -571,18 +570,6 @@ public class SQLCreateTableStatement extends SQLStatementImpl implements SQLDDLS
                         referencedTables.put(refTableName, referencedList);
                     }
                     referencedList.add(stmt);
-                }
-            }
-        }
-
-        for (SQLStatement stmt : stmtList) {
-            if (stmt instanceof OracleCreateSynonymStatement) {
-                OracleCreateSynonymStatement createSynonym = (OracleCreateSynonymStatement) stmt;
-                SQLName object = createSynonym.getObject();
-                String refTableName = object.getSimpleName();
-                SQLCreateTableStatement refTable = tables.get(refTableName);
-                if (refTable != null) {
-                    edges.add(new ListDG.Edge(stmt, refTable));
                 }
             }
         }

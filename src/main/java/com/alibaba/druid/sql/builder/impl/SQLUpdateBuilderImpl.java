@@ -25,7 +25,6 @@ import com.alibaba.druid.sql.ast.statement.SQLUpdateSetItem;
 import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
 import com.alibaba.druid.sql.builder.SQLUpdateBuilder;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlUpdateStatement;
-import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleUpdateStatement;
 import com.alibaba.druid.util.JdbcUtils;
 
 import java.util.List;
@@ -161,9 +160,6 @@ public class SQLUpdateBuilderImpl extends SQLBuilderImpl implements SQLUpdateBui
             return new MySqlUpdateStatement();    
         }
 
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleUpdateStatement();
-        }
 
 
         return new SQLUpdateStatement();

@@ -24,7 +24,6 @@ import com.alibaba.druid.sql.ast.statement.SQLDeleteStatement;
 import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import com.alibaba.druid.sql.builder.SQLDeleteBuilder;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlDeleteStatement;
-import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleDeleteStatement;
 import com.alibaba.druid.util.JdbcUtils;
 
 import java.util.List;
@@ -122,9 +121,6 @@ public class SQLDeleteBuilderImpl implements SQLDeleteBuilder {
     }
 
     public SQLDeleteStatement createSQLDeleteStatement() {
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleDeleteStatement();    
-        }
 
         if (JdbcUtils.isMysqlDbType(dbType)) {
             return new MySqlDeleteStatement();

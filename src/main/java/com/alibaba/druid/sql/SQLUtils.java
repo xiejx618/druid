@@ -20,8 +20,6 @@ import com.alibaba.druid.sql.ast.expr.*;
 import com.alibaba.druid.sql.ast.statement.*;
 import com.alibaba.druid.sql.dialect.h2.visitor.H2OutputVisitor;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlOutputVisitor;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleOutputVisitor;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleToMySqlOutputVisitor;
 import com.alibaba.druid.sql.parser.*;
 import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
 import com.alibaba.druid.sql.visitor.VisitorFeature;
@@ -355,13 +353,6 @@ public class SQLUtils {
     public static SQLASTOutputVisitor createFormatOutputVisitor(Appendable out, //
                                                                 List<SQLStatement> statementList, //
                                                                 String dbType) {
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            if (statementList == null || statementList.size() == 1) {
-                return new OracleOutputVisitor(out, false);
-            } else {
-                return new OracleOutputVisitor(out, true);
-            }
-        }
 
         if (JdbcConstants.H2.equals(dbType)) {
             return new H2OutputVisitor(out);
@@ -371,17 +362,12 @@ public class SQLUtils {
             return new MySqlOutputVisitor(out);
         }
 
-
-
         if (JdbcConstants.ELASTIC_SEARCH.equals(dbType)) {
             return new MySqlOutputVisitor(out);
         }
 
         return new SQLASTOutputVisitor(out, dbType);
     }
-
-
-
 
 
     public static List<SQLStatement> parseStatements(String sql, String dbType) {
@@ -458,20 +444,6 @@ public class SQLUtils {
 
     public static List<SQLExpr> split(SQLBinaryOpExpr x) {
         return SQLBinaryOpExpr.split(x);
-    }
-
-    public static String translateOracleToMySql(String sql) {
-        List<SQLStatement> stmtList = toStatementList(sql, JdbcConstants.ORACLE);
-
-        StringBuilder out = new StringBuilder();
-        OracleToMySqlOutputVisitor visitor = new OracleToMySqlOutputVisitor(out, false);
-        for (int i = 0; i < stmtList.size(); ++i) {
-            stmtList.get(i).accept(visitor);
-        }
-
-        String mysqlSql = out.toString();
-        return mysqlSql;
-
     }
 
     public static String addCondition(String sql, String condition, String dbType) {
@@ -784,18 +756,8 @@ public class SQLUtils {
                     normalizeName = normalizeName.replaceAll("`\\.`", ".");
                 }
 
-                if (JdbcUtils.isOracleDbType(dbType)) {
-                    if (OracleUtils.isKeyword(normalizeName)) {
-                        return name;
-                    }
-                } else if (JdbcUtils.isMysqlDbType(dbType)) {
+                if (JdbcUtils.isMysqlDbType(dbType)) {
                     if (MySqlUtils.isKeyword(normalizeName)) {
-                        return name;
-                    }
-                } else if (JdbcUtils.isPgsqlDbType(dbType)
-                        || JdbcConstants.ENTERPRISEDB.equals(dbType)
-                        || JdbcConstants.POLARDB.equals(dbType)) {
-                    if (PGUtils.isKeyword(normalizeName)) {
                         return name;
                     }
                 }

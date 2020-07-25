@@ -30,8 +30,6 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlRenameTableStateme
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlShowColumnsStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlShowCreateTableStatement;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitorAdapter;
-import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleCreateTableStatement;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleASTVisitorAdapter;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitorAdapter;
 import com.alibaba.druid.util.JdbcConstants;
@@ -63,8 +61,6 @@ public class SchemaRepository {
 
         if (JdbcConstants.MYSQL.equals(dbType) || JdbcConstants.OCEANBASE.equals(dbType)) {
             consoleVisitor = new MySqlConsoleSchemaVisitor();
-        } else if (JdbcConstants.ORACLE.equals(dbType) || JdbcConstants.OCEANBASE_ORACLE.equals(dbType)) {
-            consoleVisitor = new OracleConsoleSchemaVisitor();
         } else {
             consoleVisitor = new DefaultConsoleSchemaVisitor();
         }
@@ -266,8 +262,6 @@ public class SchemaRepository {
         SchemaResolveVisitor resolveVisitor;
         if (JdbcUtils.isMysqlDbType(dbType) || JdbcConstants.SQLITE.equals(dbType)) {
             resolveVisitor = new SchemaResolveVisitorFactory.MySqlResolveVisitor(this, optionsValue);
-        } else if (JdbcUtils.isOracleDbType(dbType)) {
-            resolveVisitor = new SchemaResolveVisitorFactory.OracleResolveVisitor(this, optionsValue);
         } else {
             resolveVisitor = new SchemaResolveVisitorFactory.SQLResolveVisitor(this, optionsValue);
         }
@@ -490,68 +484,7 @@ public class SchemaRepository {
         }
     }
 
-    public class OracleConsoleSchemaVisitor extends OracleASTVisitorAdapter {
-        public boolean visit(SQLDropSequenceStatement x) {
-            acceptDropSequence(x);
-            return false;
-        }
 
-        public boolean visit(SQLCreateSequenceStatement x) {
-            acceptCreateSequence(x);
-            return false;
-        }
-
-        public boolean visit(OracleCreateTableStatement x) {
-            visit((SQLCreateTableStatement) x);
-            return false;
-        }
-
-        public boolean visit(SQLCreateTableStatement x) {
-            acceptCreateTable(x);
-            return false;
-        }
-
-        public boolean visit(SQLDropTableStatement x) {
-            acceptDropTable(x);
-            return false;
-        }
-
-        public boolean visit(SQLCreateViewStatement x) {
-            acceptView(x);
-            return false;
-        }
-
-        public boolean visit(SQLAlterViewStatement x) {
-            acceptView(x);
-            return false;
-        }
-
-        public boolean visit(SQLCreateIndexStatement x) {
-            acceptCreateIndex(x);
-            return false;
-        }
-
-        public boolean visit(SQLCreateFunctionStatement x) {
-            acceptCreateFunction(x);
-            return false;
-        }
-
-        public boolean visit(SQLAlterTableStatement x) {
-            acceptAlterTable(x);
-            return false;
-        }
-
-        public boolean visit(SQLUseStatement x) {
-            String schema = x.getDatabase().getSimpleName();
-            setDefaultSchema(schema);
-            return false;
-        }
-
-        public boolean visit(SQLDropIndexStatement x) {
-            acceptDropIndex(x);
-            return false;
-        }
-    }
 
     public class DefaultConsoleSchemaVisitor extends SQLASTVisitorAdapter {
         public boolean visit(SQLDropSequenceStatement x) {

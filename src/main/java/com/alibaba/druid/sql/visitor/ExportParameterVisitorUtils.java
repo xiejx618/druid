@@ -19,7 +19,6 @@ import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.ast.expr.*;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlExportParameterVisitor;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleExportParameterVisitor;
 import com.alibaba.druid.util.JdbcUtils;
 
 import java.util.ArrayList;
@@ -38,12 +37,6 @@ public final class ExportParameterVisitorUtils {
             return new MySqlExportParameterVisitor(out);
         }
 
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleExportParameterVisitor(out);
-        }
-
-
-        
         if (JdbcUtils.MARIADB.equals(dbType)) {
             return new MySqlExportParameterVisitor(out);
         }

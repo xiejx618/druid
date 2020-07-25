@@ -24,7 +24,6 @@ import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.statement.*;
 import com.alibaba.druid.sql.builder.SQLSelectBuilder;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
-import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleSelectQueryBlock;
 import com.alibaba.druid.util.JdbcUtils;
 
 import java.util.List;
@@ -233,10 +232,6 @@ public class SQLSelectBuilderImpl implements SQLSelectBuilder {
     protected SQLSelectQuery createSelectQueryBlock() {
         if (JdbcUtils.isMysqlDbType(dbType)) {
             return new MySqlSelectQueryBlock();
-        }
-
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleSelectQueryBlock();
         }
 
         return new SQLSelectQueryBlock();

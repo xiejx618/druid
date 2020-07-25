@@ -952,7 +952,6 @@ public class MySqlExprParser extends SQLExprParser {
                     lexer.nextToken();
                 }
                 SQLName tableSpace = this.name();
-                partitionDef.setTablespace(tableSpace);
             } else if (lexer.token() == Token.INDEX) {
                 lexer.nextToken();
                 acceptIdentifier("DIRECTORY");

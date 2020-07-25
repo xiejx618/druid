@@ -25,7 +25,6 @@ import com.alibaba.druid.sql.ast.statement.SQLSelect;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlEvalVisitorImpl;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleEvalVisitor;
 import com.alibaba.druid.sql.visitor.functions.*;
 import com.alibaba.druid.util.HexBin;
 import com.alibaba.druid.util.JdbcUtils;
@@ -105,10 +104,6 @@ public class SQLEvalVisitorUtils {
     public static SQLEvalVisitor createEvalVisitor(String dbType) {
         if (JdbcUtils.isMysqlDbType(dbType)) {
             return new MySqlEvalVisitorImpl();
-        }
-
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleEvalVisitor();
         }
         
         return new SQLEvalVisitorImpl();
