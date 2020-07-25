@@ -15,9 +15,6 @@
  */
 package com.alibaba.druid.sql.builder.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLStatement;
@@ -29,10 +26,10 @@ import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
 import com.alibaba.druid.sql.builder.SQLUpdateBuilder;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlUpdateStatement;
 import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleUpdateStatement;
-import com.alibaba.druid.sql.dialect.postgresql.ast.stmt.PGUpdateStatement;
-import com.alibaba.druid.sql.dialect.sqlserver.ast.stmt.SQLServerUpdateStatement;
-import com.alibaba.druid.util.JdbcConstants;
 import com.alibaba.druid.util.JdbcUtils;
+
+import java.util.List;
+import java.util.Map;
 
 public class SQLUpdateBuilderImpl extends SQLBuilderImpl implements SQLUpdateBuilder {
 
@@ -168,14 +165,7 @@ public class SQLUpdateBuilderImpl extends SQLBuilderImpl implements SQLUpdateBui
             return new OracleUpdateStatement();
         }
 
-        if (JdbcUtils.isPgsqlDbType(dbType)) {
-            return new PGUpdateStatement();
-        }
-        
-        if (JdbcUtils.isSqlserverDbType(dbType)) {
-            return new SQLServerUpdateStatement();
-        }
-        
+
         return new SQLUpdateStatement();
     }
     

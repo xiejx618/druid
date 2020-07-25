@@ -15,12 +15,12 @@
  */
 package com.alibaba.druid.sql.dialect.mysql.ast.clause;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlStatementImpl;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 
  * @author zhujun [455910092@qq.com]

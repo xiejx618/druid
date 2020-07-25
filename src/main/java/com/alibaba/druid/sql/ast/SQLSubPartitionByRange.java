@@ -15,11 +15,11 @@
  */
 package com.alibaba.druid.sql.ast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLSubPartitionByRange extends SQLSubPartitionBy {
     private List<SQLName> columns = new ArrayList<SQLName>();

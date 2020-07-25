@@ -15,12 +15,12 @@
  */
 package com.alibaba.druid.sql.dialect.mysql.ast.statement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLLimit;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlShowProfileStatement extends MySqlStatementImpl implements MySqlShowStatement {
 

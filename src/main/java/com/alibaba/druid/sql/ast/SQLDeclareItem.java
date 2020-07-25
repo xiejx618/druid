@@ -15,11 +15,11 @@
  */
 package com.alibaba.druid.sql.ast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.statement.SQLTableElement;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLDeclareItem extends SQLObjectImpl implements SQLObjectWithDataType {
 

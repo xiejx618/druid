@@ -15,18 +15,18 @@
  */
 package com.alibaba.druid.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Calendar;
 import java.util.TimeZone;
-
-import com.alibaba.druid.support.logging.Log;
-import com.alibaba.druid.support.logging.LogFactory;
 
 /**
  * @author sandzhang[sandzhangtoo@gmail.com]
  */
 public class StringUtils {
 
-    private final static Log LOG = LogFactory.getLog(StringUtils.class);
+    private final static Logger LOG = LoggerFactory.getLogger(StringUtils.class);
 
     /**
      * Example: subString("12345","1","4")=23

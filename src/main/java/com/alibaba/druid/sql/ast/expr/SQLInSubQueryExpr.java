@@ -15,10 +15,6 @@
  */
 package com.alibaba.druid.sql.ast.expr;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLDataType;
 import com.alibaba.druid.sql.ast.SQLExpr;
@@ -27,6 +23,10 @@ import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.ast.statement.SQLSelect;
 import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 public class SQLInSubQueryExpr extends SQLExprImpl implements Serializable {
 

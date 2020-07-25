@@ -15,15 +15,15 @@
  */
 package com.alibaba.druid.sql.ast.expr;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLDataType;
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLExprImpl;
 import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class SQLInListExpr extends SQLExprImpl implements Serializable {
 

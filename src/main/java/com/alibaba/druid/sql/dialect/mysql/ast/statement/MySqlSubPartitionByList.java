@@ -15,15 +15,15 @@
  */
 package com.alibaba.druid.sql.dialect.mysql.ast.statement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLSubPartitionBy;
 import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition;
 import com.alibaba.druid.sql.dialect.mysql.ast.MySqlObject;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlSubPartitionByList extends SQLSubPartitionBy implements MySqlObject {
 

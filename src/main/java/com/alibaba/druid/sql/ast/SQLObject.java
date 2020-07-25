@@ -15,10 +15,10 @@
  */
 package com.alibaba.druid.sql.ast;
 
+import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
 import java.util.List;
 import java.util.Map;
-
-import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 public interface SQLObject {
     void                accept(SQLASTVisitor visitor);

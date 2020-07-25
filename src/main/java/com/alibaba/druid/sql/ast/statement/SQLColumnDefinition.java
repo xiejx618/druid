@@ -22,7 +22,6 @@ import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 

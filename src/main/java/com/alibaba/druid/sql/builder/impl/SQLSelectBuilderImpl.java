@@ -15,29 +15,19 @@
  */
 package com.alibaba.druid.sql.builder.impl;
 
-import java.util.List;
-
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLOrderBy;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
 import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
-import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
-import com.alibaba.druid.sql.ast.statement.SQLSelect;
-import com.alibaba.druid.sql.ast.statement.SQLSelectGroupByClause;
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
-import com.alibaba.druid.sql.ast.statement.SQLSelectOrderByItem;
-import com.alibaba.druid.sql.ast.statement.SQLSelectQuery;
-import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
-import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.ast.statement.*;
 import com.alibaba.druid.sql.builder.SQLSelectBuilder;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleSelectQueryBlock;
-import com.alibaba.druid.sql.dialect.postgresql.ast.stmt.PGSelectQueryBlock;
-import com.alibaba.druid.sql.dialect.sqlserver.ast.SQLServerSelectQueryBlock;
-import com.alibaba.druid.util.JdbcConstants;
 import com.alibaba.druid.util.JdbcUtils;
+
+import java.util.List;
 
 public class SQLSelectBuilderImpl implements SQLSelectBuilder {
 
@@ -243,14 +233,6 @@ public class SQLSelectBuilderImpl implements SQLSelectBuilder {
     protected SQLSelectQuery createSelectQueryBlock() {
         if (JdbcUtils.isMysqlDbType(dbType)) {
             return new MySqlSelectQueryBlock();
-        }
-
-        if (JdbcUtils.isPgsqlDbType(dbType)) {
-            return new PGSelectQueryBlock();
-        }
-
-        if (JdbcUtils.isSqlserverDbType(dbType)) {
-            return new SQLServerSelectQueryBlock();
         }
 
         if (JdbcUtils.isOracleDbType(dbType)) {

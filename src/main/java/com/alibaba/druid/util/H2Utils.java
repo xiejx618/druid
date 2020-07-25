@@ -15,17 +15,16 @@
  */
 package com.alibaba.druid.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import javax.sql.XAConnection;
-
 import org.h2.jdbc.JdbcConnection;
 import org.h2.jdbcx.JdbcDataSourceFactory;
 import org.h2.jdbcx.JdbcXAConnection;
 import org.h2.message.TraceObject;
+
+import javax.sql.XAConnection;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class H2Utils {
 

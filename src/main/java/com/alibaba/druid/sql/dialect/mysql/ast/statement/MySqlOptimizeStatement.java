@@ -15,11 +15,11 @@
  */
 package com.alibaba.druid.sql.dialect.mysql.ast.statement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlOptimizeStatement extends MySqlStatementImpl {
 

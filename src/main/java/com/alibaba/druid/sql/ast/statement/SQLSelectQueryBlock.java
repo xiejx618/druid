@@ -18,10 +18,6 @@ package com.alibaba.druid.sql.ast.statement;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.*;
 import com.alibaba.druid.sql.ast.expr.*;
-import com.alibaba.druid.sql.dialect.odps.ast.OdpsUDTFSQLSelectItem;
-import com.alibaba.druid.sql.parser.Lexer;
-import com.alibaba.druid.sql.parser.SQLParserUtils;
-import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitorAdapter;
 import com.alibaba.druid.util.FnvHash;
@@ -32,46 +28,45 @@ import java.util.List;
 import java.util.TreeSet;
 
 public class SQLSelectQueryBlock extends SQLObjectImpl implements SQLSelectQuery, SQLReplaceable, SQLDbTypedObject {
-    protected int                        distionOption;
-    protected final List<SQLSelectItem>  selectList      = new ArrayList<SQLSelectItem>();
-
-    protected SQLTableSource             from;
-    protected SQLExprTableSource         into;
-    protected SQLExpr                    where;
+    protected final List<SQLSelectItem> selectList = new ArrayList<SQLSelectItem>();
+    protected int distionOption;
+    protected SQLTableSource from;
+    protected SQLExprTableSource into;
+    protected SQLExpr where;
 
     // for oracle & oceanbase
-    protected SQLExpr                    startWith;
-    protected SQLExpr                    connectBy;
-    protected boolean                    prior           = false;
-    protected boolean                    noCycle         = false;
-    protected SQLOrderBy                 orderBySiblings;
+    protected SQLExpr startWith;
+    protected SQLExpr connectBy;
+    protected boolean prior = false;
+    protected boolean noCycle = false;
+    protected SQLOrderBy orderBySiblings;
 
-    protected SQLSelectGroupByClause     groupBy;
-    protected List<SQLWindow>            windows;
-    protected SQLOrderBy                 orderBy;
-    protected boolean                    parenthesized   = false;
-    protected boolean                    forUpdate       = false;
-    protected boolean                    noWait          = false;
-    protected SQLExpr                    waitTime;
-    protected SQLLimit                   limit;
+    protected SQLSelectGroupByClause groupBy;
+    protected List<SQLWindow> windows;
+    protected SQLOrderBy orderBy;
+    protected boolean parenthesized = false;
+    protected boolean forUpdate = false;
+    protected boolean noWait = false;
+    protected SQLExpr waitTime;
+    protected SQLLimit limit;
 
     // for oracle
-    protected List<SQLExpr>              forUpdateOf;
+    protected List<SQLExpr> forUpdateOf;
     protected List<SQLSelectOrderByItem> distributeBy;
     protected List<SQLSelectOrderByItem> sortBy;
     protected List<SQLSelectOrderByItem> clusterBy;
 
-    protected String                     cachedSelectList; // optimized for SelectListCache
-    protected long                       cachedSelectListHash; // optimized for SelectListCache
+    protected String cachedSelectList; // optimized for SelectListCache
+    protected long cachedSelectListHash; // optimized for SelectListCache
 
-    protected String                     dbType;
-    protected List<SQLCommentHint>       hints;
+    protected String dbType;
+    protected List<SQLCommentHint> hints;
 
-    public SQLSelectQueryBlock(){
+    public SQLSelectQueryBlock() {
 
     }
 
-    public SQLSelectQueryBlock(String dbType){
+    public SQLSelectQueryBlock(String dbType) {
         this.dbType = dbType;
     }
 
@@ -383,14 +378,6 @@ public class SQLSelectQueryBlock extends SQLObjectImpl implements SQLSelectQuery
         this.addSelectItem(new SQLSelectItem(expr, alias));
     }
 
-    private static class AggregationStatVisitor extends SQLASTVisitorAdapter {
-        private boolean aggregation = false;
-        public boolean visit(SQLAggregateExpr x) {
-            aggregation = true;
-            return false;
-        }
-    };
-
     public boolean hasSelectAggregation() {
         AggregationStatVisitor v = new AggregationStatVisitor();
         for (SQLSelectItem item : selectList) {
@@ -399,6 +386,8 @@ public class SQLSelectQueryBlock extends SQLObjectImpl implements SQLSelectQuery
         }
         return v.aggregation;
     }
+
+    ;
 
     public SQLTableSource getFrom() {
         return this.from;
@@ -1129,7 +1118,6 @@ public class SQLSelectQueryBlock extends SQLObjectImpl implements SQLSelectQuery
         }
     }
 
-
     public void addCondition(String conditionSql) {
         if (conditionSql == null || conditionSql.length() == 0) {
             return;
@@ -1303,18 +1291,16 @@ public class SQLSelectQueryBlock extends SQLObjectImpl implements SQLSelectQuery
         List<String> aliasList = new ArrayList<String>();
 
         for (SQLSelectItem item : this.selectList) {
-            if (item instanceof OdpsUDTFSQLSelectItem) {
-                aliasList.addAll(((OdpsUDTFSQLSelectItem) item).getAliasList());
+
+            SQLExpr expr = item.getExpr();
+            if (expr instanceof SQLAllColumnExpr) {
+                // TODO
+            } else if (expr instanceof SQLPropertyExpr && ((SQLPropertyExpr) expr).getName().equals("*")) {
+                // TODO
             } else {
-                SQLExpr expr = item.getExpr();
-                if (expr instanceof SQLAllColumnExpr) {
-                    // TODO
-                } else if (expr instanceof SQLPropertyExpr && ((SQLPropertyExpr) expr).getName().equals("*")) {
-                    // TODO
-                } else {
-                    aliasList.add(item.computeAlias());
-                }
+                aliasList.add(item.computeAlias());
             }
+
         }
 
         return aliasList;
@@ -1375,5 +1361,14 @@ public class SQLSelectQueryBlock extends SQLObjectImpl implements SQLSelectQuery
         }
 
         return removeCount > 0;
+    }
+
+    private static class AggregationStatVisitor extends SQLASTVisitorAdapter {
+        private boolean aggregation = false;
+
+        public boolean visit(SQLAggregateExpr x) {
+            aggregation = true;
+            return false;
+        }
     }
 }

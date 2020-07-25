@@ -15,61 +15,22 @@
  */
 package com.alibaba.druid.sql;
 
+import com.alibaba.druid.sql.ast.*;
+import com.alibaba.druid.sql.ast.expr.*;
+import com.alibaba.druid.sql.ast.statement.*;
+import com.alibaba.druid.sql.dialect.h2.visitor.H2OutputVisitor;
+import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlOutputVisitor;
+import com.alibaba.druid.sql.dialect.oracle.visitor.OracleOutputVisitor;
+import com.alibaba.druid.sql.dialect.oracle.visitor.OracleToMySqlOutputVisitor;
+import com.alibaba.druid.sql.parser.*;
+import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
+import com.alibaba.druid.sql.visitor.VisitorFeature;
+import com.alibaba.druid.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
-
-import com.alibaba.druid.sql.ast.SQLExpr;
-import com.alibaba.druid.sql.ast.SQLName;
-import com.alibaba.druid.sql.ast.SQLObject;
-import com.alibaba.druid.sql.ast.SQLReplaceable;
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
-import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
-import com.alibaba.druid.sql.ast.expr.SQLInListExpr;
-import com.alibaba.druid.sql.ast.expr.SQLLiteralExpr;
-import com.alibaba.druid.sql.ast.expr.SQLUnaryExpr;
-import com.alibaba.druid.sql.ast.expr.SQLUnaryOperator;
-import com.alibaba.druid.sql.ast.expr.SQLVariantRefExpr;
-import com.alibaba.druid.sql.ast.statement.SQLCreateTableStatement;
-import com.alibaba.druid.sql.ast.statement.SQLDeleteStatement;
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
-import com.alibaba.druid.sql.ast.statement.SQLSelectOrderByItem;
-import com.alibaba.druid.sql.ast.statement.SQLSelectQuery;
-import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
-import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
-import com.alibaba.druid.sql.ast.statement.SQLSetStatement;
-import com.alibaba.druid.sql.ast.statement.SQLUpdateSetItem;
-import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
-import com.alibaba.druid.sql.dialect.db2.visitor.DB2OutputVisitor;
-import com.alibaba.druid.sql.dialect.db2.visitor.DB2SchemaStatVisitor;
-import com.alibaba.druid.sql.dialect.h2.visitor.H2OutputVisitor;
-import com.alibaba.druid.sql.dialect.h2.visitor.H2SchemaStatVisitor;
-import com.alibaba.druid.sql.dialect.hive.visitor.HiveOutputVisitor;
-import com.alibaba.druid.sql.dialect.hive.visitor.HiveSchemaStatVisitor;
-import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlOutputVisitor;
-import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
-import com.alibaba.druid.sql.dialect.odps.visitor.OdpsOutputVisitor;
-import com.alibaba.druid.sql.dialect.odps.visitor.OdpsSchemaStatVisitor;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleOutputVisitor;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleSchemaStatVisitor;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleToMySqlOutputVisitor;
-import com.alibaba.druid.sql.dialect.postgresql.visitor.PGOutputVisitor;
-import com.alibaba.druid.sql.dialect.postgresql.visitor.PGSchemaStatVisitor;
-import com.alibaba.druid.sql.dialect.sqlserver.visitor.SQLServerOutputVisitor;
-import com.alibaba.druid.sql.dialect.sqlserver.visitor.SQLServerSchemaStatVisitor;
-import com.alibaba.druid.sql.parser.Lexer;
-import com.alibaba.druid.sql.parser.ParserException;
-import com.alibaba.druid.sql.parser.SQLExprParser;
-import com.alibaba.druid.sql.parser.SQLParserFeature;
-import com.alibaba.druid.sql.parser.SQLParserUtils;
-import com.alibaba.druid.sql.parser.SQLStatementParser;
-import com.alibaba.druid.sql.parser.Token;
-import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
-import com.alibaba.druid.sql.visitor.SchemaStatVisitor;
-import com.alibaba.druid.sql.visitor.VisitorFeature;
-import com.alibaba.druid.support.logging.Log;
-import com.alibaba.druid.support.logging.LogFactory;
-import com.alibaba.druid.util.*;
 
 public class SQLUtils {
     private final static SQLParserFeature[] FORMAT_DEFAULT_FEATURES = {
@@ -81,7 +42,7 @@ public class SQLUtils {
     public static FormatOption DEFAULT_LCASE_FORMAT_OPTION
             = new FormatOption(false, true);
 
-    private final static Log LOG = LogFactory.getLog(SQLUtils.class);
+    private final static Logger LOG = LoggerFactory.getLogger(SQLUtils.class);
 
     public static String toSQLString(SQLObject sqlObject, String dbType) {
         return toSQLString(sqlObject, dbType, null);
@@ -410,25 +371,7 @@ public class SQLUtils {
             return new MySqlOutputVisitor(out);
         }
 
-        if (JdbcUtils.isPgsqlDbType(dbType)) {
-            return new PGOutputVisitor(out);
-        }
 
-        if (JdbcUtils.isSqlserverDbType(dbType)) {
-            return new SQLServerOutputVisitor(out);
-        }
-
-        if (JdbcConstants.DB2.equals(dbType)) {
-            return new DB2OutputVisitor(out);
-        }
-
-        if (JdbcConstants.ODPS.equals(dbType)) {
-            return new OdpsOutputVisitor(out);
-        }
-
-        if (JdbcConstants.HIVE.equals(dbType)) {
-            return new HiveOutputVisitor(out);
-        }
 
         if (JdbcConstants.ELASTIC_SEARCH.equals(dbType)) {
             return new MySqlOutputVisitor(out);
@@ -437,51 +380,9 @@ public class SQLUtils {
         return new SQLASTOutputVisitor(out, dbType);
     }
 
-    @Deprecated
-    public static SchemaStatVisitor createSchemaStatVisitor(List<SQLStatement> statementList, String dbType) {
-        return createSchemaStatVisitor(dbType);
-    }
-
-    public static SchemaStatVisitor createSchemaStatVisitor(String dbType) {
-        if (JdbcUtils.isOracleDbType(dbType)) {
-            return new OracleSchemaStatVisitor();
-        }
-
-        if (JdbcConstants.H2.equals(dbType)) {
-            return new H2SchemaStatVisitor();
-        }
-
-        if (JdbcUtils.isMysqlDbType(dbType)) {
-            return new MySqlSchemaStatVisitor();
-        }
-
-        if (JdbcUtils.isPgsqlDbType(dbType)) {
-            return new PGSchemaStatVisitor();
-        }
-
-        if (JdbcUtils.isSqlserverDbType(dbType)) {
-            return new SQLServerSchemaStatVisitor();
-        }
-
-        if (JdbcConstants.DB2.equals(dbType)) {
-            return new DB2SchemaStatVisitor();
-        }
-
-        if (JdbcConstants.ODPS.equals(dbType)) {
-            return new OdpsSchemaStatVisitor();
-        }
 
 
-        if (JdbcConstants.HIVE.equals(dbType)) {
-            return new HiveSchemaStatVisitor();
-        }
 
-        if (JdbcConstants.ELASTIC_SEARCH.equals(dbType)) {
-            return new MySqlSchemaStatVisitor();
-        }
-
-        return new SchemaStatVisitor();
-    }
 
     public static List<SQLStatement> parseStatements(String sql, String dbType) {
         return parseStatements(sql, dbType, new SQLParserFeature[0]);

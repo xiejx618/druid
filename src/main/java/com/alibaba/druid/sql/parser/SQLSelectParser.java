@@ -18,9 +18,6 @@ package com.alibaba.druid.sql.parser;
 import com.alibaba.druid.sql.ast.*;
 import com.alibaba.druid.sql.ast.expr.*;
 import com.alibaba.druid.sql.ast.statement.*;
-import com.alibaba.druid.sql.dialect.db2.ast.stmt.DB2SelectQueryBlock;
-import com.alibaba.druid.sql.dialect.hive.parser.HiveCreateTableParser;
-import com.alibaba.druid.sql.dialect.hive.stmt.HiveCreateTableStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.expr.MySqlOrderingExpr;
 import com.alibaba.druid.util.FnvHash;
 import com.alibaba.druid.util.JdbcConstants;
@@ -839,19 +836,15 @@ public class SQLSelectParser extends SQLParser {
                 } else if (lexer.identifierEquals(FnvHash.Constants.RS)
                         && JdbcConstants.DB2.equals(dbType)) {
                     lexer.nextToken();
-                    ((DB2SelectQueryBlock) queryBlock).setIsolation(DB2SelectQueryBlock.Isolation.RS);
                 } else if (lexer.identifierEquals(FnvHash.Constants.RR)
                         && JdbcConstants.DB2.equals(dbType)) {
                     lexer.nextToken();
-                    ((DB2SelectQueryBlock) queryBlock).setIsolation(DB2SelectQueryBlock.Isolation.RR);
                 } else if (lexer.identifierEquals(FnvHash.Constants.CS)
                         && JdbcConstants.DB2.equals(dbType)) {
                     lexer.nextToken();
-                    ((DB2SelectQueryBlock) queryBlock).setIsolation(DB2SelectQueryBlock.Isolation.CS);
                 } else if (lexer.identifierEquals(FnvHash.Constants.UR)
                         && JdbcConstants.DB2.equals(dbType)) {
                     lexer.nextToken();
-                    ((DB2SelectQueryBlock) queryBlock).setIsolation(DB2SelectQueryBlock.Isolation.UR);
                 } else {
                     lexer.reset(mark);
                 }
@@ -1251,10 +1244,6 @@ public class SQLSelectParser extends SQLParser {
                     }
                 }
             } else if (lexer.token() == Token.TABLE) {
-                HiveCreateTableParser createTableParser = new HiveCreateTableParser(lexer);
-                HiveCreateTableStatement stmt = (HiveCreateTableStatement) createTableParser
-                        .parseCreateTable(false);
-                rightTableSource = new SQLAdhocTableSource(stmt);
                 primaryTableSourceRest(rightTableSource);
             } else {
                 if (lexer.identifierEquals(FnvHash.Constants.UNNEST)) {

@@ -15,28 +15,11 @@
  */
 package com.alibaba.druid.sql.parser;
 
-import static com.alibaba.druid.sql.parser.CharTypes.isFirstIdentifierChar;
-import static com.alibaba.druid.sql.parser.CharTypes.isIdentifierChar;
-import static com.alibaba.druid.sql.parser.CharTypes.isWhitespace;
-import static com.alibaba.druid.sql.parser.LayoutCharacters.EOI;
-import static com.alibaba.druid.sql.parser.SQLParserFeature.KeepComments;
-import static com.alibaba.druid.sql.parser.SQLParserFeature.OptimizedForParameterized;
-import static com.alibaba.druid.sql.parser.SQLParserFeature.SkipComments;
-import static com.alibaba.druid.sql.parser.Token.COLONCOLON;
-import static com.alibaba.druid.sql.parser.Token.COLONEQ;
-import static com.alibaba.druid.sql.parser.Token.COMMA;
-import static com.alibaba.druid.sql.parser.Token.DOT;
-import static com.alibaba.druid.sql.parser.Token.EOF;
-import static com.alibaba.druid.sql.parser.Token.EQ;
-import static com.alibaba.druid.sql.parser.Token.ERROR;
-import static com.alibaba.druid.sql.parser.Token.LBRACE;
-import static com.alibaba.druid.sql.parser.Token.LBRACKET;
-import static com.alibaba.druid.sql.parser.Token.LITERAL_ALIAS;
-import static com.alibaba.druid.sql.parser.Token.LITERAL_CHARS;
-import static com.alibaba.druid.sql.parser.Token.LPAREN;
-import static com.alibaba.druid.sql.parser.Token.RBRACE;
-import static com.alibaba.druid.sql.parser.Token.RBRACKET;
-import static com.alibaba.druid.sql.parser.Token.RPAREN;
+import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlLexer;
+import com.alibaba.druid.util.FnvHash;
+import com.alibaba.druid.util.JdbcConstants;
+import com.alibaba.druid.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -44,11 +27,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
-import com.alibaba.druid.sql.dialect.mysql.parser.MySqlLexer;
-import com.alibaba.druid.util.FnvHash;
-import com.alibaba.druid.util.JdbcConstants;
-import com.alibaba.druid.util.StringUtils;
+import static com.alibaba.druid.sql.parser.CharTypes.*;
+import static com.alibaba.druid.sql.parser.LayoutCharacters.EOI;
+import static com.alibaba.druid.sql.parser.SQLParserFeature.*;
+import static com.alibaba.druid.sql.parser.Token.*;
 
 /**
  * @author wenshao [szujobs@hotmail.com]

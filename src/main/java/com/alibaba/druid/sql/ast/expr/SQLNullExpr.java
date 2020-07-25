@@ -15,13 +15,13 @@
  */
 package com.alibaba.druid.sql.ast.expr;
 
-import static com.alibaba.druid.sql.visitor.SQLEvalVisitor.EVAL_VALUE_NULL;
+import com.alibaba.druid.sql.ast.SQLExprImpl;
+import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 import java.util.Collections;
 import java.util.List;
 
-import com.alibaba.druid.sql.ast.SQLExprImpl;
-import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+import static com.alibaba.druid.sql.visitor.SQLEvalVisitor.EVAL_VALUE_NULL;
 
 public final class SQLNullExpr extends SQLExprImpl implements SQLLiteralExpr, SQLValuableExpr {
 

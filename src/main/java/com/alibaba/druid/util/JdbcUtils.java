@@ -15,42 +15,24 @@
  */
 package com.alibaba.druid.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URL;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.Driver;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
-import com.alibaba.druid.support.logging.Log;
-import com.alibaba.druid.support.logging.LogFactory;
+import java.sql.*;
+import java.util.*;
 
 /**
  * @author wenshao [szujobs@hotmail.com]
  */
 public final class JdbcUtils implements JdbcConstants {
 
-    private final static Log        LOG                = LogFactory.getLog(JdbcUtils.class);
+    private final static Logger LOG                = LoggerFactory.getLogger(JdbcUtils.class);
 
     private static final Properties DRIVER_URL_MAPPING = new Properties();
 

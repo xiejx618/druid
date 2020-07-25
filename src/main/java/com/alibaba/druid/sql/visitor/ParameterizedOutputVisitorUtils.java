@@ -15,26 +15,22 @@
  */
 package com.alibaba.druid.sql.visitor;
 
-import java.util.List;
-
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
-import com.alibaba.druid.sql.dialect.db2.visitor.DB2OutputVisitor;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlInsertStatement;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlOutputVisitor;
 import com.alibaba.druid.sql.dialect.oracle.visitor.OracleParameterizedOutputVisitor;
-import com.alibaba.druid.sql.dialect.phoenix.visitor.PhoenixOutputVisitor;
-import com.alibaba.druid.sql.dialect.postgresql.visitor.PGOutputVisitor;
-import com.alibaba.druid.sql.dialect.sqlserver.visitor.SQLServerOutputVisitor;
 import com.alibaba.druid.sql.parser.SQLParserFeature;
 import com.alibaba.druid.sql.parser.SQLParserUtils;
 import com.alibaba.druid.sql.parser.SQLSelectListCache;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
 import com.alibaba.druid.util.FnvHash;
 import com.alibaba.druid.util.JdbcUtils;
+
+import java.util.List;
 
 public class ParameterizedOutputVisitorUtils {
     private final static SQLParserFeature[] defaultFeatures = {
@@ -274,23 +270,6 @@ public class ParameterizedOutputVisitorUtils {
         }
 
 
-        if (JdbcUtils.isPgsqlDbType(dbType)
-                || JdbcUtils.ENTERPRISEDB.equals(dbType)
-                || JdbcUtils.POLARDB.equals(dbType)) {
-            return new PGOutputVisitor(out, true);
-        }
-
-        if (JdbcUtils.isSqlserverDbType(dbType)) {
-            return new SQLServerOutputVisitor(out, true);
-        }
-
-        if (JdbcUtils.DB2.equals(dbType)) {
-            return new DB2OutputVisitor(out, true);
-        }
-
-        if (JdbcUtils.PHOENIX.equals(dbType)) {
-            return new PhoenixOutputVisitor(out, true);
-        }
 
         if (JdbcUtils.ELASTIC_SEARCH.equals(dbType)) {
             return new MySqlOutputVisitor(out, true);

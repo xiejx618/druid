@@ -15,15 +15,11 @@
  */
 package com.alibaba.druid.sql.ast.statement;
 
+import com.alibaba.druid.sql.ast.*;
+import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.alibaba.druid.sql.ast.SQLExpr;
-import com.alibaba.druid.sql.ast.SQLHint;
-import com.alibaba.druid.sql.ast.SQLName;
-import com.alibaba.druid.sql.ast.SQLObjectImpl;
-import com.alibaba.druid.sql.ast.SQLStatementImpl;
-import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 public class SQLMergeStatement extends SQLStatementImpl {
 

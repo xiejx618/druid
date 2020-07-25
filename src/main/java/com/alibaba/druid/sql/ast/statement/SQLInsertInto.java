@@ -15,13 +15,13 @@
  */
 package com.alibaba.druid.sql.ast.statement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLName;
 import com.alibaba.druid.sql.ast.SQLObjectImpl;
 import com.alibaba.druid.sql.ast.statement.SQLInsertStatement.ValuesClause;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class SQLInsertInto extends SQLObjectImpl {
     protected SQLExprTableSource        tableSource;

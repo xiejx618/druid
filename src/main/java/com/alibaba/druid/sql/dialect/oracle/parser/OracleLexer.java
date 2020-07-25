@@ -15,18 +15,13 @@
  */
 package com.alibaba.druid.sql.dialect.oracle.parser;
 
-import static com.alibaba.druid.sql.parser.CharTypes.isIdentifierChar;
-import static com.alibaba.druid.sql.parser.LayoutCharacters.EOI;
+import com.alibaba.druid.sql.parser.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.alibaba.druid.sql.parser.Keywords;
-import com.alibaba.druid.sql.parser.Lexer;
-import com.alibaba.druid.sql.parser.NotAllowCommentException;
-import com.alibaba.druid.sql.parser.ParserException;
-import com.alibaba.druid.sql.parser.SQLParserFeature;
-import com.alibaba.druid.sql.parser.Token;
+import static com.alibaba.druid.sql.parser.CharTypes.isIdentifierChar;
+import static com.alibaba.druid.sql.parser.LayoutCharacters.EOI;
 
 public class OracleLexer extends Lexer {
 

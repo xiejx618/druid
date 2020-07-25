@@ -15,11 +15,11 @@
  */
 package com.alibaba.druid.sql.ast;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.util.FnvHash;
+
+import java.util.Collections;
+import java.util.List;
 
 public class SQLMapDataType extends SQLObjectImpl implements SQLDataType {
     private String dbType;

@@ -15,16 +15,16 @@
  */
 package com.alibaba.druid.sql.parser;
 
+import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
+import com.alibaba.druid.util.FnvHash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
-import com.alibaba.druid.support.logging.Log;
-import com.alibaba.druid.support.logging.LogFactory;
-import com.alibaba.druid.util.FnvHash;
-
 public class SQLSelectListCache {
-    private final static Log                LOG             = LogFactory.getLog(SQLSelectListCache.class);
+    private final static Logger LOG = LoggerFactory.getLogger(SQLSelectListCache.class);
     private final String                    dbType;
     private final List<Entry>               entries         = new CopyOnWriteArrayList<Entry>();
 

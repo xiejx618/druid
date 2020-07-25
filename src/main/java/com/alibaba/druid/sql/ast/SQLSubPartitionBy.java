@@ -15,10 +15,10 @@
  */
 package com.alibaba.druid.sql.ast;
 
+import com.alibaba.druid.sql.ast.statement.SQLAssignItem;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.alibaba.druid.sql.ast.statement.SQLAssignItem;
 
 public abstract class SQLSubPartitionBy extends SQLObjectImpl {
 

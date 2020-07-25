@@ -15,13 +15,13 @@
  */
 package com.alibaba.druid.sql.dialect.oracle.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLDataType;
 import com.alibaba.druid.sql.ast.SQLDataTypeImpl;
 import com.alibaba.druid.sql.ast.SQLParameter;
 import com.alibaba.druid.sql.ast.SQLStatement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OracleFunctionDataType extends SQLDataTypeImpl {
     private boolean isStatic = false;

@@ -15,12 +15,12 @@
  */
 package com.alibaba.druid.sql.ast;
 
+import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 public abstract class SQLObjectImpl implements SQLObject {
 

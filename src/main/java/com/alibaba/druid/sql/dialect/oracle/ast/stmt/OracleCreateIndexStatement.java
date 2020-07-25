@@ -15,20 +15,16 @@
  */
 package com.alibaba.druid.sql.dialect.oracle.ast.stmt;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.alibaba.druid.sql.ast.SQLExpr;
-import com.alibaba.druid.sql.ast.SQLName;
-import com.alibaba.druid.sql.ast.SQLObject;
-import com.alibaba.druid.sql.ast.SQLPartition;
-import com.alibaba.druid.sql.ast.SQLPartitionBy;
+import com.alibaba.druid.sql.ast.*;
 import com.alibaba.druid.sql.ast.statement.SQLCreateIndexStatement;
 import com.alibaba.druid.sql.ast.statement.SQLCreateStatement;
 import com.alibaba.druid.sql.dialect.oracle.ast.OracleSegmentAttributes;
 import com.alibaba.druid.sql.dialect.oracle.visitor.OracleASTVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.util.JdbcConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OracleCreateIndexStatement extends SQLCreateIndexStatement implements OracleDDLStatement, OracleSegmentAttributes, SQLCreateStatement {
 

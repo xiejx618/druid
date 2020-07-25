@@ -15,10 +15,10 @@
  */
 package com.alibaba.druid.sql.dialect.mysql.ast.statement;
 
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLCommentHint;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
+
+import java.util.List;
 
 public class MySqlHintStatement extends MySqlStatementImpl {
 

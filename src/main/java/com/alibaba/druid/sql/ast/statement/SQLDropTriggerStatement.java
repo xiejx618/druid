@@ -1,5 +1,10 @@
 package com.alibaba.druid.sql.ast.statement;
 
+import com.alibaba.druid.sql.ast.SQLName;
+import com.alibaba.druid.sql.ast.SQLObject;
+import com.alibaba.druid.sql.ast.SQLStatementImpl;
+import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +23,6 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.alibaba.druid.sql.ast.SQLName;
-import com.alibaba.druid.sql.ast.SQLObject;
-import com.alibaba.druid.sql.ast.SQLStatementImpl;
-import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 
 public class SQLDropTriggerStatement extends SQLStatementImpl implements SQLDropStatement {
 

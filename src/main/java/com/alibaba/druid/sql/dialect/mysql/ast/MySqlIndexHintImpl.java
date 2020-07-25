@@ -15,11 +15,11 @@
  */
 package com.alibaba.druid.sql.dialect.mysql.ast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLName;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class MySqlIndexHintImpl extends MySqlObjectImpl implements MySqlIndexHint {
 

@@ -15,20 +15,15 @@
  */
 package com.alibaba.druid.util;
 
+import org.postgresql.core.BaseConnection;
+import org.postgresql.xa.PGXAConnection;
+
+import javax.sql.XAConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.sql.XAConnection;
-
-import org.postgresql.core.BaseConnection;
-import org.postgresql.xa.PGXAConnection;
+import java.util.*;
 
 public class PGUtils {
 

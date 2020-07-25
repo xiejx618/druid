@@ -15,90 +15,19 @@
  */
 package com.alibaba.druid.sql.parser;
 
+import com.alibaba.druid.sql.SQLUtils;
+import com.alibaba.druid.sql.ast.*;
+import com.alibaba.druid.sql.ast.expr.*;
+import com.alibaba.druid.sql.ast.statement.*;
+import com.alibaba.druid.sql.dialect.oracle.ast.expr.OracleArgumentExpr;
+import com.alibaba.druid.util.FnvHash;
+import com.alibaba.druid.util.JdbcConstants;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import com.alibaba.druid.sql.SQLUtils;
-import com.alibaba.druid.sql.ast.SQLCommentHint;
-import com.alibaba.druid.sql.ast.SQLDataType;
-import com.alibaba.druid.sql.ast.SQLDataTypeImpl;
-import com.alibaba.druid.sql.ast.SQLDataTypeRefExpr;
-import com.alibaba.druid.sql.ast.SQLExpr;
-import com.alibaba.druid.sql.ast.SQLLimit;
-import com.alibaba.druid.sql.ast.SQLName;
-import com.alibaba.druid.sql.ast.SQLObject;
-import com.alibaba.druid.sql.ast.SQLOrderBy;
-import com.alibaba.druid.sql.ast.SQLOrderingSpecification;
-import com.alibaba.druid.sql.ast.SQLOver;
-import com.alibaba.druid.sql.ast.SQLPartition;
-import com.alibaba.druid.sql.ast.SQLPartitionBy;
-import com.alibaba.druid.sql.ast.SQLPartitionValue;
-import com.alibaba.druid.sql.ast.expr.SQLAggregateExpr;
-import com.alibaba.druid.sql.ast.expr.SQLAggregateOption;
-import com.alibaba.druid.sql.ast.expr.SQLAllColumnExpr;
-import com.alibaba.druid.sql.ast.expr.SQLAllExpr;
-import com.alibaba.druid.sql.ast.expr.SQLAnyExpr;
-import com.alibaba.druid.sql.ast.expr.SQLBetweenExpr;
-import com.alibaba.druid.sql.ast.expr.SQLBinaryExpr;
-import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
-import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExprGroup;
-import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
-import com.alibaba.druid.sql.ast.expr.SQLBooleanExpr;
-import com.alibaba.druid.sql.ast.expr.SQLCaseExpr;
-import com.alibaba.druid.sql.ast.expr.SQLCastExpr;
-import com.alibaba.druid.sql.ast.expr.SQLCharExpr;
-import com.alibaba.druid.sql.ast.expr.SQLContainsExpr;
-import com.alibaba.druid.sql.ast.expr.SQLCurrentOfCursorExpr;
-import com.alibaba.druid.sql.ast.expr.SQLDateExpr;
-import com.alibaba.druid.sql.ast.expr.SQLDefaultExpr;
-import com.alibaba.druid.sql.ast.expr.SQLExistsExpr;
-import com.alibaba.druid.sql.ast.expr.SQLGroupingSetExpr;
-import com.alibaba.druid.sql.ast.expr.SQLHexExpr;
-import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
-import com.alibaba.druid.sql.ast.expr.SQLInListExpr;
-import com.alibaba.druid.sql.ast.expr.SQLInSubQueryExpr;
-import com.alibaba.druid.sql.ast.expr.SQLIntegerExpr;
-import com.alibaba.druid.sql.ast.expr.SQLListExpr;
-import com.alibaba.druid.sql.ast.expr.SQLMethodInvokeExpr;
-import com.alibaba.druid.sql.ast.expr.SQLNCharExpr;
-import com.alibaba.druid.sql.ast.expr.SQLNotExpr;
-import com.alibaba.druid.sql.ast.expr.SQLNullExpr;
-import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
-import com.alibaba.druid.sql.ast.expr.SQLQueryExpr;
-import com.alibaba.druid.sql.ast.expr.SQLSequenceExpr;
-import com.alibaba.druid.sql.ast.expr.SQLSomeExpr;
-import com.alibaba.druid.sql.ast.expr.SQLTimestampExpr;
-import com.alibaba.druid.sql.ast.expr.SQLUnaryExpr;
-import com.alibaba.druid.sql.ast.expr.SQLUnaryOperator;
-import com.alibaba.druid.sql.ast.expr.SQLVariantRefExpr;
-import com.alibaba.druid.sql.ast.statement.SQLAssignItem;
-import com.alibaba.druid.sql.ast.statement.SQLCharacterDataType;
-import com.alibaba.druid.sql.ast.statement.SQLCheck;
-import com.alibaba.druid.sql.ast.statement.SQLColumnCheck;
-import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition;
-import com.alibaba.druid.sql.ast.statement.SQLColumnPrimaryKey;
-import com.alibaba.druid.sql.ast.statement.SQLColumnReference;
-import com.alibaba.druid.sql.ast.statement.SQLColumnUniqueKey;
-import com.alibaba.druid.sql.ast.statement.SQLConstraint;
-import com.alibaba.druid.sql.ast.statement.SQLForeignKeyConstraint;
-import com.alibaba.druid.sql.ast.statement.SQLForeignKeyImpl;
-import com.alibaba.druid.sql.ast.statement.SQLNotNullConstraint;
-import com.alibaba.druid.sql.ast.statement.SQLNullConstraint;
-import com.alibaba.druid.sql.ast.statement.SQLPrimaryKey;
-import com.alibaba.druid.sql.ast.statement.SQLPrimaryKeyImpl;
-import com.alibaba.druid.sql.ast.statement.SQLSelect;
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
-import com.alibaba.druid.sql.ast.statement.SQLSelectOrderByItem;
-import com.alibaba.druid.sql.ast.statement.SQLSelectQuery;
-import com.alibaba.druid.sql.ast.statement.SQLUnique;
-import com.alibaba.druid.sql.ast.statement.SQLUpdateSetItem;
-import com.alibaba.druid.sql.dialect.oracle.ast.expr.OracleArgumentExpr;
-import com.alibaba.druid.sql.dialect.postgresql.ast.expr.PGTypeCastExpr;
-import com.alibaba.druid.util.FnvHash;
-import com.alibaba.druid.util.JdbcConstants;
 
 public class SQLExprParser extends SQLParser {
 
@@ -328,7 +257,7 @@ public class SQLExprParser extends SQLParser {
     public int parseIntValue() {
         if (lexer.token == Token.LITERAL_INT) {
             Number number = this.lexer.integerValue();
-            int intVal = ((Integer) number).intValue();
+            int intVal = number.intValue();
             lexer.nextToken();
             return intVal;
         } else {
@@ -466,24 +395,24 @@ public class SQLExprParser extends SQLParser {
                         if (lexer.token == Token.LITERAL_ALIAS) {
                             if (concat == null) {
                                 concat = new SQLMethodInvokeExpr("CONCAT");
-                                concat.addParameter(sqlExpr);
+                                concat.addArgument(sqlExpr);
                                 sqlExpr = concat;
                             }
                             String alias = lexer.stringVal();
                             lexer.nextToken();
                             SQLCharExpr concat_right = new SQLCharExpr(alias.substring(1, alias.length() - 1));
-                            concat.addParameter(concat_right);
+                            concat.addArgument(concat_right);
                         } else if (lexer.token == Token.LITERAL_CHARS || lexer.token == Token.LITERAL_NCHARS) {
                             if (concat == null) {
                                 concat = new SQLMethodInvokeExpr("CONCAT");
-                                concat.addParameter(sqlExpr);
+                                concat.addArgument(sqlExpr);
                                 sqlExpr = concat;
                             }
 
                             String chars = lexer.stringVal();
                             lexer.nextToken();
                             SQLCharExpr concat_right = new SQLCharExpr(chars);
-                            concat.addParameter(concat_right);
+                            concat.addArgument(concat_right);
                         } else {
                             break;
                         }
@@ -1113,19 +1042,6 @@ public class SQLExprParser extends SQLParser {
                 } else if (hash_lower == FnvHash.Constants.POSITION
                         && JdbcConstants.MYSQL.equals(dbType)) {
                     return parsePosition();
-                }else if (hash_lower == FnvHash.Constants.INT4 && JdbcConstants.POSTGRESQL.equals(dbType)) {
-                    PGTypeCastExpr castExpr = new PGTypeCastExpr();
-                    castExpr.setExpr(this.expr());
-                    castExpr.setDataType(new SQLDataTypeImpl(methodName));
-                    accept(Token.RPAREN);
-                    return castExpr;
-                } else if (hash_lower == FnvHash.Constants.VARBIT && JdbcConstants.POSTGRESQL.equals(dbType)) {
-                    PGTypeCastExpr castExpr = new PGTypeCastExpr();
-                    SQLExpr len = this.primary();
-                    castExpr.setDataType(new SQLDataTypeImpl(methodName, len));
-                    accept(Token.RPAREN);
-                    castExpr.setExpr(this.expr());
-                    return castExpr;
                 } else if (hash_lower == FnvHash.Constants.CONVERT && JdbcConstants.MYSQL.equals(dbType)) {
                     methodInvokeExpr = new SQLMethodInvokeExpr(methodName, hash_lower);
                     SQLExpr arg0 = this.expr();
@@ -1411,10 +1327,10 @@ public class SQLExprParser extends SQLParser {
                 lexer.nextToken();
             } else {
                 if (lexer.token == Token.PLUS) {
-                    methodInvokeExpr.addParameter(new SQLIdentifierExpr("+"));
+                    methodInvokeExpr.addArgument(new SQLIdentifierExpr("+"));
                     lexer.nextToken();
                 } else {
-                    exprList(methodInvokeExpr.getParameters(), methodInvokeExpr);
+                    exprList(methodInvokeExpr.getArguments(), methodInvokeExpr);
                 }
                 accept(Token.RPAREN);
             }
