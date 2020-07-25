@@ -1,4 +1,4 @@
-package org.exam.visitor;
+package com.alibaba.druid.sql.dialect.mysql.visitor;
 
 import com.alibaba.druid.sql.ast.SQLDataType;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryExpr;
@@ -15,7 +15,9 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlTableIndex;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlUnlockTablesStatement;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlOutputVisitor;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 //sed -e "/^--/d" \
@@ -77,9 +79,13 @@ public class MysqlToH2Visitor extends MySqlOutputVisitor {
     @Override
     public boolean visit(MySqlCreateTableStatement x) {
         //去掉表的AUTO_INCREMENT和CHARACTER SET
-        x.getTableOptions().keySet().removeIf(key -> "AUTO_INCREMENT".equals(key) || "CHARSET".equals(key)
-                || "CHARACTER SET".equals(key)
-        );
+        Set<String> keySet = x.getTableOptions().keySet();
+        for (Iterator<String> iterator = keySet.iterator(); iterator.hasNext(); ) {
+            String key = iterator.next();
+            if ("AUTO_INCREMENT".equals(key) || "CHARSET".equals(key) || "CHARACTER SET".equals(key)) {
+                iterator.remove();
+            }
+        }
         x.setComment(null);
         return super.visit(x);
     }
@@ -144,19 +150,26 @@ public class MysqlToH2Visitor extends MySqlOutputVisitor {
     @Override
     protected void printTableElements(List<SQLTableElement> tableElementList) {
         //移除外键 和 索引
-        tableElementList.removeIf(sqlTableElement -> sqlTableElement instanceof MysqlForeignKey
-                || sqlTableElement instanceof MySqlKey);
+        for (Iterator<SQLTableElement> iterator = tableElementList.iterator(); iterator.hasNext(); ) {
+            SQLTableElement sqlTableElement = iterator.next();
+            if (sqlTableElement instanceof MysqlForeignKey
+                    || sqlTableElement instanceof MySqlKey) {
+                iterator.remove();
+            }
+        }
         super.printTableElements(tableElementList);
     }
 
     @Override
     public boolean visit(SQLSetStatement x) {
         List<SQLAssignItem> items = x.getItems();
-        items.removeIf(item -> {
-                    String target = item.getTarget().toString();
-                    return "SQL_MODE".equals(target) || "time_zone".equals(target);
-                }
-        );
+        for (Iterator<SQLAssignItem> iterator = items.iterator(); iterator.hasNext(); ) {
+            String target = iterator.next().getTarget().toString();
+            if ("SQL_MODE".equals(target) || "time_zone".equals(target)) {
+                iterator.remove();
+            }
+        }
+
         if (items.size() > 0) {
             return super.visit(x);
         } else {

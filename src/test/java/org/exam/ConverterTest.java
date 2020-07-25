@@ -4,7 +4,7 @@ import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.util.JdbcConstants;
 import com.alibaba.druid.util.Utils;
-import org.exam.visitor.MysqlToH2Visitor;
+import com.alibaba.druid.sql.dialect.mysql.visitor.MysqlToH2Visitor;
 import org.junit.*;
 
 import java.sql.*;
