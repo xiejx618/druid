@@ -107,6 +107,10 @@ public class ConverterTest {
     public void test8() throws Exception {
         fromFile("xwiki-sqlyog.sql");
     }
+    @Test
+    public void test9() throws Exception {
+        fromFile("mysqldump.sql");
+    }
 
     private void fromFile(String filepath) throws Exception {
         String sql = Utils.readFromResource(filepath);
